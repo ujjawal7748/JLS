@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { TrackerProvider } from '../context/TrackerContext';
+import { Sidebar } from '../components/Sidebar';
 import { Navbar } from '../components/Navbar';
 import { DashboardView } from '../components/DashboardView';
 import { GFGTutorialView } from '../components/GFGTutorialView';
@@ -16,6 +17,8 @@ import { ChecklistsView } from '../components/ChecklistsView';
 export default function Home() {
   const [activeTab, setActiveTab] = useState<string>('dashboard');
   const [selectedTopicForQuiz, setSelectedTopicForQuiz] = useState<string | undefined>(undefined);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(false);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState<boolean>(false);
 
   const handleSelectTopicForQuiz = (topicId: string) => {
     setSelectedTopicForQuiz(topicId);
@@ -24,62 +27,79 @@ export default function Home() {
 
   return (
     <TrackerProvider>
-      <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
-        {/* Navigation Bar */}
-        <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
+      <div className="min-h-screen bg-slate-950 text-slate-100 flex font-sans">
+        {/* Left Sidebar */}
+        <Sidebar
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          collapsed={sidebarCollapsed}
+          setCollapsed={setSidebarCollapsed}
+          mobileOpen={mobileSidebarOpen}
+          setMobileOpen={setMobileSidebarOpen}
+        />
 
-        {/* Main Content Arena */}
-        <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {activeTab === 'dashboard' && (
-            <DashboardView
-              setActiveTab={setActiveTab}
-              onSelectTopicForQuiz={handleSelectTopicForQuiz}
-            />
-          )}
+        {/* Right Main Body (Offset by sidebar width) */}
+        <div
+          className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ease-in-out ${
+            sidebarCollapsed ? 'lg:pl-20' : 'lg:pl-64'
+          }`}
+        >
+          {/* Minimized Top Header */}
+          <Navbar activeTab={activeTab} setMobileOpen={setMobileSidebarOpen} />
 
-          {activeTab === 'gfg-hub' && (
-            <GFGTutorialView
-              onSelectTopicForQuiz={handleSelectTopicForQuiz}
-              setActiveTab={setActiveTab}
-            />
-          )}
+          {/* Main Content Arena */}
+          <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            {activeTab === 'dashboard' && (
+              <DashboardView
+                setActiveTab={setActiveTab}
+                onSelectTopicForQuiz={handleSelectTopicForQuiz}
+              />
+            )}
 
-          {activeTab === 'curriculum' && (
-            <PhaseExplorerView
-              onSelectTopicForQuiz={handleSelectTopicForQuiz}
-              setActiveTab={setActiveTab}
-            />
-          )}
+            {activeTab === 'gfg-hub' && (
+              <GFGTutorialView
+                onSelectTopicForQuiz={handleSelectTopicForQuiz}
+                setActiveTab={setActiveTab}
+              />
+            )}
 
-          {activeTab === 'quizzes' && (
-            <QuizArenaView
-              selectedTopicId={selectedTopicForQuiz}
-              onSelectTopic={(topicId) => setSelectedTopicForQuiz(topicId)}
-            />
-          )}
+            {activeTab === 'curriculum' && (
+              <PhaseExplorerView
+                onSelectTopicForQuiz={handleSelectTopicForQuiz}
+                setActiveTab={setActiveTab}
+              />
+            )}
 
-          {activeTab === 'milestones' && <MilestonesView setActiveTab={setActiveTab} />}
+            {activeTab === 'quizzes' && (
+              <QuizArenaView
+                selectedTopicId={selectedTopicForQuiz}
+                onSelectTopic={(topicId) => setSelectedTopicForQuiz(topicId)}
+              />
+            )}
 
-          {activeTab === 'schedule' && <SchedulePlannerView />}
+            {activeTab === 'milestones' && <MilestonesView setActiveTab={setActiveTab} />}
 
-          {activeTab === 'interview' && <FlashcardsView />}
+            {activeTab === 'schedule' && <SchedulePlannerView />}
 
-          {activeTab === 'capstone' && <CapstoneArchitectView />}
+            {activeTab === 'interview' && <FlashcardsView />}
 
-          {activeTab === 'checklists' && <ChecklistsView />}
-        </main>
+            {activeTab === 'capstone' && <CapstoneArchitectView />}
 
-        {/* Footer */}
-        <footer className="border-t border-slate-900 bg-slate-950/80 py-6 text-center text-xs text-slate-500">
-          <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-            <span>
-              Spring Boot to Microservices • 14-Week Job-Ready Curriculum & Adaptive Tracker
-            </span>
-            <span>
-              Deployable on <strong className="text-white">Vercel</strong> • LocalStorage Persistent
-            </span>
-          </div>
-        </footer>
+            {activeTab === 'checklists' && <ChecklistsView />}
+          </main>
+
+          {/* Footer (Human developer style) */}
+          <footer className="border-t border-slate-900 bg-slate-950 py-5 text-xs text-slate-500">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-2">
+              <span className="font-medium">
+                Spring Boot to Microservices • Personal Study Guide & Progress Tracker
+              </span>
+              <span className="text-slate-400">
+                Paced for 90 Days • LocalStorage Saved
+              </span>
+            </div>
+          </footer>
+        </div>
       </div>
     </TrackerProvider>
   );

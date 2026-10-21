@@ -3,19 +3,18 @@ import './globals.css';
 import React from 'react';
 
 export const metadata: Metadata = {
-  title: 'SpringMaster • 3-Month Spring Boot to Microservices Tracker',
+  title: 'Spring Boot to Microservices • 90-Day Study Tracker & Notes',
   description:
-    'The premier 14-week study roadmap and progress tracker for mastering Java, Spring Boot 3, Microservices, Kafka, Docker, Kubernetes, and Distributed Systems.',
+    'Structured study roadmap and engineering guide for mastering Java 21, Spring Boot 3, Kafka, Redis, Docker, Kubernetes, and Distributed Systems.',
   keywords: [
     'Spring Boot 3',
     'Microservices',
     'Java 21',
-    'Kafka',
+    'Apache Kafka',
     'Kubernetes',
     'Redis',
-    'Docker',
+    'PostgreSQL',
     'Distributed Systems',
-    'Spring AI',
   ],
 };
 

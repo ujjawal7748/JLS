@@ -2732,7 +2732,7 @@ export const PHASES_DATA: Phase[] = [
   {
     id: 10,
     title: 'Phase 10: Spring AI, RAG, LLMs and MCP',
-    subtitle: 'Next-Generation Generative AI Integration & Agentic Backends',
+    subtitle: 'Enterprise AI Integration, RAG & MCP Architecture',
     weeksCompressed: '1 week',
     originalWeeks: '2–3 weeks',
     priority: 'Differentiator',

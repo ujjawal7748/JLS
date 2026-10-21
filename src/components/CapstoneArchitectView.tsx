@@ -27,7 +27,7 @@ export const CapstoneArchitectView: React.FC = () => {
     { name: 'Docker Multi-Stage & K8s', category: 'DevOps', color: 'border-teal-500/40 text-teal-300' },
     { name: 'Resilience4j Circuit Breaker', category: 'Fault Tolerance', color: 'border-orange-500/40 text-orange-300' },
     { name: 'Micrometer Tracing + Zipkin', category: 'Observability', color: 'border-pink-500/40 text-pink-300' },
-    { name: 'Spring AI + MCP Server', category: 'Agentic AI', color: 'border-indigo-500/40 text-indigo-300' },
+    { name: 'Spring AI + MCP Server', category: 'AI & Tools', color: 'border-indigo-500/40 text-indigo-300' },
   ];
 
   return (

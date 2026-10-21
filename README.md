@@ -1,78 +1,89 @@
-# ☕ SpringMaster: 14-Week Spring Boot to Microservices Study Tracker
+# ☕ SpringRoadmap • 90-Day Spring Boot to Microservices Tracker
 
-> **A high-impact, gamified study platform designed to take you from core Java to job-ready distributed systems and microservices architect in 3 months (~14 weeks, ~30 hrs/week).**
-> **Built with Next.js 16 (App Router), React 19, TypeScript, and Tailwind CSS. 100% ready for Vercel deployment.**
-
----
-
-## 🚀 Key Features
-
-### 1. 🎯 Adaptive Quiz Arena After Every Topic
-- **Automated Difficulty Progression**:
-  - Starts at your preferred difficulty (`Easy` 🟢, `Medium` 🟡, `Hard` 🔴, `Architect` 🟣).
-  - **Adaptive Auto-Scale Engine**: Answering 2 consecutive questions correctly automatically scales difficulty to the next tier!
-  - **Manual Tier Switcher**: Override and jump between Easy, Medium, Hard, or Architect difficulty anytime.
-- **Detailed Instant Feedback**:
-  - Comprehensive explanation for the correct answer.
-  - Granular breakdown explaining why incorrect choices fail.
-  - Code snippets and architectural gotchas.
-
-### 2. 🏆 Milestones & Rewards System
-- **10 Major Milestones**:
-  - Highlights **Week 6 / Phases 0–4 Gateway Milestone**: The critical threshold where you qualify to apply for **Junior Backend Roles**!
-  - **12 Unlockable Badges** (Java Craftsman, Bean Master, ORM Whisperer, Security Sentinel, Kafka Wrangler, Distributed Sage, etc.).
-  - **XP & Level Progression** (Level 1: Novice Java Developer $\rightarrow$ Level 10: Distributed Systems Architect) with confetti celebrations!
-
-### 3. ⏱ 3-Month Schedule Pacing & Pomodoro Focus Timer
-- **Pacing Metrics**:
-  - Weekday target: **3 hours / day**
-  - Weekend target: **6–7 hours / day**
-  - Total: **~28–30 hours / week** (~390 total hours over 90 days)
-- **Built-in 25-minute Pomodoro Timer** with 1-click session logging and XP rewards.
-- **Dynamic 14-Week Calendar Table** showing deliverables and target dates calculated from your start date.
-
-### 4. 📚 11 Full Phases & Topic Deep-Dives
-- Covers the complete study guide:
-  - **Phase 0**: Java, SQL, Git, HTTP Foundations
-  - **Phase 1**: Spring Core, Boot, MVC, REST APIs
-  - **Phase 2**: Data Access (JPA, Hibernate, N+1 fix, @Transactional)
-  - **Phase 3**: Spring Security 6, JWT, BCrypt, RBAC
-  - **Phase 4**: Testing (JUnit 5, Mockito, Testcontainers), AOP, CI/CD
-  - **Phase 5**: Caching & Messaging (Redis & Kafka)
-  - **Phase 6**: Microservices & Spring Cloud (Gateway, Eureka, Resilience4j, Zipkin)
-  - **Phase 7**: Docker, Compose, Kubernetes (Minikube)
-  - **Phase 8**: Distributed-Systems Patterns (SAGA, Outbox, Idempotency, Rate Limiting)
-  - **Phase 9**: Reactive Programming (WebFlux, Reactor, R2DBC, SSE)
-  - **Phase 10**: Spring AI, RAG, PGVector, Model Context Protocol (MCP)
-- Direct **YouTube Search Links** for every topic and phase overview.
-- **Fast-Track Focus** callouts to prioritize high-yield concepts if time-pressed.
-- **Personal Notes** editor per topic, saved automatically to browser local storage.
-
-### 5. 🛠 Capstone Project Architect
-- Blueprint of the multi-phase **Payments & E-Commerce Platform** demonstrating how a monolith evolves into an enterprise microservices mesh across Phases 1 to 10.
-
-### 6. 📋 Job-Readiness Checklist & Resume Builder
-- Interactive checklist covering every essential interview competency.
-- Pre-formulated, battle-tested **Resume Bullet Points** with 1-click copy to clipboard.
+> **A personal study tracker and structured learning workspace to prepare for backend software engineer roles in 3 months (~14 weeks, ~28–30 hours/week).**
+> **Built with Next.js 16 (App Router), React 19, TypeScript, and Tailwind CSS. Deploys cleanly to Vercel with zero server setup.**
 
 ---
 
-## 🌐 Deploying to Vercel
+## 🧭 Navigation & Layout
 
-This project is built using standard Next.js App Router and runs statically without external server dependencies.
+- **Collapsible Sidebar**: Compact left navigation bar with 1-click collapse/expand toggle, active route highlighting, and quick level/streak tracker.
+- **Minimal Topbar**: Clean, uncluttered header displaying active section breadcrumbs, study pace status, and JSON export/import buttons.
 
-### Option A: Push to GitHub & Connect to Vercel
-1. Initialize a git repository and commit:
+---
+
+## 🛠 Features
+
+### 1. 🌲 GFG-Style Learning Hub (`Topic > Subtopic > Sub-subtopic`)
+- **3-Level Hierarchical Tree**:
+  - **Topic**: Phase / major domain (e.g., *Spring Core*, *JPA & Hibernate*, *Distributed Systems*).
+  - **Subtopic**: Specific competency area (e.g., *Inversion of Control*, *Fetching Strategies*).
+  - **Sub-subtopic**: Leaf concept with in-depth notes, copyable code, and official docs (e.g., *Constructor vs Field Injection*, *Solving N+1 with JOIN FETCH*).
+- **In-Depth Conceptual Notes**: Plain-language mechanics explaining why things work the way they do under the hood.
+- **Copyable Java / Spring Snippets**: Real production-grade patterns with syntax formatting.
+- **Key Takeaways & Interview Gotchas**: Critical warnings and edge cases asked in tech interviews.
+- **Curated Video Recommendations**: Search query paired with specific top creators (*Amigoscode*, *Dan Vega*, *Telusko*, *Bouali Ali*, *Vlad Mihalcea*, *Hussein Nasser*, *Confluent Developer*, *ByteByteGo*).
+- **Official Documentation**: Direct references to Oracle Java APIs, Spring.io guides, and PostgreSQL docs.
+- **Continuous Reading Flow**: Sequential `Previous` / `Next` subtopic buttons.
+
+### 2. 🎯 Adaptive Quiz Arena After Every Topic
+- **4 Difficulty Tiers**: `Easy` 🟢, `Medium` 🟡, `Hard` 🔴, and `Architect` 🟣.
+- **Adaptive Auto-Scaling**: Answering 2 questions correctly automatically steps you up to the next tier.
+- **Instant In-Depth Explanations**: Detailed breakdown of why the right answer is correct and why each incorrect option fails.
+- **Manual Tier Toggle**: Switch difficulty manually at any time.
+
+### 3. 🏆 Milestones & Rewards
+- **10 Core Milestones**:
+  - Highlights **Week 6 Gateway**: When you are ready to begin applying for **Junior Backend Roles**!
+- **12 Unlockable Badges** (e.g. *Java Craftsman*, *Bean Master*, *ORM Whisperer*, *Security Sentinel*, *Kafka Wrangler*, *Distributed Sage*).
+- **Developer Leveling System** with XP, daily streaks, and celebration confetti.
+
+### 4. ⏱ 3-Month Study Pacing & Pomodoro Focus Timer
+- **Pacing Metrics**: Weekday target **3 hrs/day** • Weekend target **6–7 hrs/day** (~28–30 hrs/week).
+- **Countdown Tracker**: Real-time progress bar from Day 1 to Day 90 based on your start date.
+- **Integrated 25-Minute Pomodoro Clock**: Built-in timer with 1-click study hours logging.
+- **14-Week Calendar Table**: Detailed roadmap with weekly deliverables.
+
+### 5. 🏗 Capstone Platform Architecture & Interview Tools
+- **Distributed Payments Blueprint**: Shows how an e-commerce platform evolves from a monolith to a distributed microservices mesh across Phases 1 to 10.
+- **Interview Q&A Flashcards**: Key interview questions with model answers and mastery tracking.
+- **Job-Readiness Checklist & Resume Bullets**: Checklist of core skills and copyable bullet points for your resume.
+
+---
+
+## 🚀 Local Development
+
+1. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+
+2. **Run local dev server**:
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+3. **Verify production build**:
+   ```bash
+   npm run build
+   ```
+
+---
+
+## 🌐 Deploy to Vercel
+
+### Option 1: Via GitHub (Recommended)
+1. Commit and push your code to GitHub:
    ```bash
    git add .
-   git commit -m "feat: complete spring boot to microservices tracker"
+   git commit -m "feat: complete spring boot study tracker"
+   git push origin main
    ```
-2. Push to your GitHub / GitLab / Bitbucket repository.
-3. Go to [Vercel](https://vercel.com/new).
-4. Select your repository and click **Deploy**.
-5. Vercel automatically detects Next.js and builds the project in seconds.
+2. Go to [Vercel](https://vercel.com/new).
+3. Import your GitHub repository and click **Deploy**. Next.js will build and deploy automatically.
 
-### Option B: Deploy via Vercel CLI
+### Option 2: Deploy with Vercel CLI
 ```bash
 npm install -g vercel
 vercel
@@ -80,26 +91,6 @@ vercel
 
 ---
 
-## 💻 Local Development
-
-1. **Install dependencies**:
-   ```bash
-   npm install
-   ```
-
-2. **Run dev server**:
-   ```bash
-   npm run dev
-   ```
-   Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-3. **Production build check**:
-   ```bash
-   npm run build
-   ```
-
----
-
 ## 💾 Data Persistence & Backup
-- All state (completed topics, quiz scores, XP, level, study logs, notes) is stored in the browser's `localStorage`.
-- Use the **Export (JSON)** button in the top navigation bar to download a JSON backup file anytime, or the **Import** button to restore your progress across different devices.
+- All progress, quiz scores, custom notes, and study logs are saved automatically in your browser's `localStorage`.
+- Use the **Download / Export (JSON)** button in the top bar to back up your data or move it between machines.

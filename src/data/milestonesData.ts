@@ -95,7 +95,7 @@ export const MILESTONES_DATA: Milestone[] = [
   },
   {
     id: 'm-ai-engineer',
-    title: 'Milestone 10: Spring AI & Agentic Backend Pioneer',
+    title: 'Milestone 10: Spring AI & Vector RAG Integration',
     phaseIds: [10],
     targetWeek: 14,
     description: 'Implement Spring AI ChatClient, PGVector RAG embeddings, and Model Context Protocol (MCP) server tools.',
@@ -196,9 +196,9 @@ export const BADGES_DATA: Badge[] = [
   },
   {
     id: 'badge-ai-pioneer',
-    title: 'Agentic AI Pioneer',
+    title: 'Modern Architecture Pioneer',
     description: 'Integrated Spring AI, vector embeddings, RAG, and MCP servers.',
-    icon: '🧠',
+    icon: '⚡',
     criteria: 'Complete Phase 10 topics & mini-project',
     xpReward: 800,
   },
