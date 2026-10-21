@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useTracker } from '../context/TrackerContext';
 import { GFG_CURRICULUM_DATA } from '../data/gfgCurriculumData';
 import { SubSubTopic, SubTopic, Topic, Phase } from '../types';
+import { DeepDiveTopicContext } from './AIDeepDiveView';
 import {
   BookOpen,
   ChevronRight,
@@ -27,11 +28,13 @@ import {
 
 interface GFGTutorialViewProps {
   onSelectTopicForQuiz: (topicId: string) => void;
+  onSelectTopicForDeepDive?: (topicContext: DeepDiveTopicContext) => void;
   setActiveTab: (tab: string) => void;
 }
 
 export const GFGTutorialView: React.FC<GFGTutorialViewProps> = ({
   onSelectTopicForQuiz,
+  onSelectTopicForDeepDive,
   setActiveTab,
 }) => {
   const { progress, toggleTopicCompletion } = useTracker();
@@ -274,27 +277,45 @@ export const GFGTutorialView: React.FC<GFGTutorialViewProps> = ({
                                                   setActiveSubTopicId(subTopic.id);
                                                   setActiveSubSubTopicId(sst.id);
                                                 }}
-                                                className={`py-1 px-2 rounded-lg text-[11px] cursor-pointer flex items-center justify-between transition-all ${
+                                                className={`py-1 px-2 rounded-lg text-[11px] cursor-pointer flex items-center justify-between transition-all group/item ${
                                                   isActive
                                                     ? 'bg-emerald-500/20 text-emerald-300 font-bold border-l-2 border-emerald-400 shadow-sm'
                                                     : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'
                                                 }`}
                                               >
                                                 <span className="truncate">{sst.title}</span>
-                                                <button
-                                                  onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    toggleTopicCompletion(sst.id);
-                                                  }}
-                                                  className="ml-1 text-slate-500 hover:text-emerald-400 flex-shrink-0"
-                                                  title={isDone ? 'Completed' : 'Mark Complete (+50 XP)'}
-                                                >
-                                                  {isDone ? (
-                                                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 fill-emerald-500/20" />
-                                                  ) : (
-                                                    <Circle className="w-3.5 h-3.5" />
-                                                  )}
-                                                </button>
+                                                <div className="flex items-center gap-1 ml-1 flex-shrink-0">
+                                                  <button
+                                                    onClick={(e) => {
+                                                      e.stopPropagation();
+                                                      onSelectTopicForDeepDive?.({
+                                                        phaseTitle: `Phase ${phase.id}: ${phase.title}`,
+                                                        topicTitle: topic.title,
+                                                        subTopicTitle: `${subTopic.title} • ${sst.title}`,
+                                                        subTopicId: sst.id,
+                                                        keyConcepts: sst.keyTakeaways || [],
+                                                      });
+                                                    }}
+                                                    className="p-1 rounded text-slate-500 hover:text-emerald-300 hover:bg-slate-800 transition-colors"
+                                                    title="AI Deep Dive with Gemini"
+                                                  >
+                                                    <Sparkles className="w-3 h-3 text-emerald-400" />
+                                                  </button>
+                                                  <button
+                                                    onClick={(e) => {
+                                                      e.stopPropagation();
+                                                      toggleTopicCompletion(sst.id);
+                                                    }}
+                                                    className="p-1 rounded text-slate-500 hover:text-emerald-400 transition-colors"
+                                                    title={isDone ? 'Completed' : 'Mark Complete (+50 XP)'}
+                                                  >
+                                                    {isDone ? (
+                                                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 fill-emerald-500/20" />
+                                                    ) : (
+                                                      <Circle className="w-3.5 h-3.5" />
+                                                    )}
+                                                  </button>
+                                                </div>
                                               </div>
                                             );
                                           })}
@@ -342,18 +363,37 @@ export const GFGTutorialView: React.FC<GFGTutorialViewProps> = ({
                   </div>
                 </div>
 
-                {/* Mark Complete Button */}
-                <button
-                  onClick={() => toggleTopicCompletion(activeSubSubTopic.id)}
-                  className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition-all flex-shrink-0 ${
-                    isCurrentCompleted
-                      ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
-                      : 'bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-500/30'
-                  }`}
-                >
-                  <CheckCircle2 className="w-4 h-4" />
-                  <span>{isCurrentCompleted ? 'Completed' : 'Mark Subtopic Complete (+50 XP)'}</span>
-                </button>
+                {/* Actions: Deep Dive & Mark Complete */}
+                <div className="flex items-center gap-2 flex-wrap">
+                  <button
+                    onClick={() => {
+                      onSelectTopicForDeepDive?.({
+                        phaseTitle: activePhase?.title,
+                        topicTitle: activeTopic?.title,
+                        subTopicTitle: `${activeSubTopic?.title} • ${activeSubSubTopic.title}`,
+                        subTopicId: activeSubSubTopic.id,
+                        keyConcepts: activeSubSubTopic.keyTakeaways || [],
+                      });
+                    }}
+                    className="px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white shadow-md shadow-emerald-950/40 transition-all hover:scale-102 flex-shrink-0"
+                    title="Generate comprehensive masterclass notes with Gemini AI"
+                  >
+                    <Sparkles className="w-3.5 h-3.5 text-emerald-200" />
+                    <span>AI Deep Dive</span>
+                  </button>
+
+                  <button
+                    onClick={() => toggleTopicCompletion(activeSubSubTopic.id)}
+                    className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition-all flex-shrink-0 ${
+                      isCurrentCompleted
+                        ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
+                        : 'bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-500/30'
+                    }`}
+                  >
+                    <CheckCircle2 className="w-4 h-4" />
+                    <span>{isCurrentCompleted ? 'Completed' : 'Mark Subtopic Complete (+50 XP)'}</span>
+                  </button>
+                </div>
               </div>
 
               {/* GFG Overview Box */}

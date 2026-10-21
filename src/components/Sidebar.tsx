@@ -40,6 +40,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   const navigation = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { id: 'ai-deepdive', label: 'Topic Deep Dive', icon: Sparkles, badge: 'Gemini' },
     { id: 'gfg-hub', label: 'Learning Hub (GFG)', icon: BookOpen, badge: 'New' },
     { id: 'curriculum', label: 'Roadmap & Topics', icon: Map },
     { id: 'quizzes', label: 'Topic Quizzes', icon: HelpCircle },

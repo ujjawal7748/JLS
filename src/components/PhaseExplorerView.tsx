@@ -20,14 +20,17 @@ import {
   Sparkles,
   Info,
 } from 'lucide-react';
+import { DeepDiveTopicContext } from './AIDeepDiveView';
 
 interface PhaseExplorerViewProps {
   onSelectTopicForQuiz: (topicId: string) => void;
+  onSelectTopicForDeepDive?: (topicContext: DeepDiveTopicContext) => void;
   setActiveTab: (tab: string) => void;
 }
 
 export const PhaseExplorerView: React.FC<PhaseExplorerViewProps> = ({
   onSelectTopicForQuiz,
+  onSelectTopicForDeepDive,
   setActiveTab,
 }) => {
   const {
@@ -282,8 +285,25 @@ export const PhaseExplorerView: React.FC<PhaseExplorerViewProps> = ({
                               </div>
                             </div>
 
-                            {/* Quiz Trigger Button */}
+                            {/* Actions: Deep Dive & Quiz Trigger */}
                             <div className="flex items-center gap-2 flex-shrink-0">
+                              <button
+                                onClick={() => {
+                                  onSelectTopicForDeepDive?.({
+                                    phaseTitle: `Phase ${phase.id}: ${phase.title}`,
+                                    topicTitle: topic.title,
+                                    subTopicTitle: topic.summary,
+                                    subTopicId: topic.id,
+                                    keyConcepts: topic.keyConcepts,
+                                  });
+                                }}
+                                className="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-500/30 text-xs font-bold rounded-lg flex items-center gap-1.5 transition-all hover:scale-105"
+                                title="Generate masterclass notes with Gemini"
+                              >
+                                <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+                                <span>Deep Dive</span>
+                              </button>
+
                               <button
                                 onClick={() => {
                                   onSelectTopicForQuiz(topic.id);

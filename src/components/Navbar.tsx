@@ -20,6 +20,7 @@ interface NavbarProps {
 
 const TAB_TITLES: { [key: string]: string } = {
   dashboard: 'Dashboard Overview',
+  'ai-deepdive': 'Topic Deep Dive (Gemini AI)',
   'gfg-hub': 'Learning Hub (GFG Style)',
   curriculum: 'Roadmap & Topics',
   quizzes: 'Topic Quizzes',

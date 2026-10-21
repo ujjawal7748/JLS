@@ -13,16 +13,23 @@ import { SchedulePlannerView } from '../components/SchedulePlannerView';
 import { FlashcardsView } from '../components/FlashcardsView';
 import { CapstoneArchitectView } from '../components/CapstoneArchitectView';
 import { ChecklistsView } from '../components/ChecklistsView';
+import { AIDeepDiveView, DeepDiveTopicContext } from '../components/AIDeepDiveView';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<string>('dashboard');
   const [selectedTopicForQuiz, setSelectedTopicForQuiz] = useState<string | undefined>(undefined);
+  const [selectedTopicForDeepDive, setSelectedTopicForDeepDive] = useState<DeepDiveTopicContext | null>(null);
   const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState<boolean>(false);
 
   const handleSelectTopicForQuiz = (topicId: string) => {
     setSelectedTopicForQuiz(topicId);
     setActiveTab('quizzes');
+  };
+
+  const handleSelectTopicForDeepDive = (topicContext: DeepDiveTopicContext) => {
+    setSelectedTopicForDeepDive(topicContext);
+    setActiveTab('ai-deepdive');
   };
 
   return (
@@ -56,9 +63,18 @@ export default function Home() {
               />
             )}
 
+            {activeTab === 'ai-deepdive' && (
+              <AIDeepDiveView
+                initialTopic={selectedTopicForDeepDive}
+                onClearInitialTopic={() => setSelectedTopicForDeepDive(null)}
+                setActiveTab={setActiveTab}
+              />
+            )}
+
             {activeTab === 'gfg-hub' && (
               <GFGTutorialView
                 onSelectTopicForQuiz={handleSelectTopicForQuiz}
+                onSelectTopicForDeepDive={handleSelectTopicForDeepDive}
                 setActiveTab={setActiveTab}
               />
             )}
@@ -66,6 +82,7 @@ export default function Home() {
             {activeTab === 'curriculum' && (
               <PhaseExplorerView
                 onSelectTopicForQuiz={handleSelectTopicForQuiz}
+                onSelectTopicForDeepDive={handleSelectTopicForDeepDive}
                 setActiveTab={setActiveTab}
               />
             )}
