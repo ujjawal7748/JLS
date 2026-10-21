@@ -12,6 +12,39 @@ export interface QuizQuestion {
   whyWrong?: { [optionIndex: number]: string };
 }
 
+export interface SubSubTopic {
+  id: string;
+  title: string;
+  conceptDetails: string;
+  codeSnippet?: string;
+  keyTakeaways: string[];
+  interviewTrap?: string;
+  docUrl?: string;
+  docLabel?: string;
+  youtube: {
+    channelName: string;
+    searchQuery: string;
+    url: string;
+  };
+  quizzes?: QuizQuestion[];
+}
+
+export interface SubTopic {
+  id: string;
+  topicId: string;
+  title: string;
+  overview: string;
+  subSubTopics: SubSubTopic[];
+  docUrl?: string;
+  docLabel?: string;
+  youtube: {
+    channelName: string;
+    searchQuery: string;
+    url: string;
+  };
+  quizzes?: QuizQuestion[];
+}
+
 export interface Topic {
   id: string;
   phaseId: number;
@@ -22,6 +55,7 @@ export interface Topic {
   youtubeSearchUrl: string;
   interviewTip?: string;
   quizzes: QuizQuestion[];
+  subTopics?: SubTopic[];
 }
 
 export interface Phase {
@@ -86,7 +120,7 @@ export interface StudySessionLog {
 }
 
 export interface UserProgressState {
-  completedTopics: string[]; // topic IDs
+  completedTopics: string[]; // topic/subtopic IDs
   completedMiniProjects: number[]; // phase IDs
   completedChecklistItems: string[];
   quizScores: {

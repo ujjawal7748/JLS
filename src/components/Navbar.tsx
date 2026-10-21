@@ -64,7 +64,8 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
 
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: Sparkles },
-    { id: 'curriculum', label: 'Phases & Topics', icon: BookOpen },
+    { id: 'gfg-hub', label: 'GFG Learning Hub', icon: BookOpen },
+    { id: 'curriculum', label: 'Roadmap & Projects', icon: Layers },
     { id: 'quizzes', label: 'Adaptive Quizzes', icon: HelpCircle },
     { id: 'milestones', label: 'Milestones & Badges', icon: Award },
     { id: 'schedule', label: '3-Mo Schedule & Timer', icon: Calendar },

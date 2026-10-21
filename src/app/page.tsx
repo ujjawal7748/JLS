@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { TrackerProvider } from '../context/TrackerContext';
 import { Navbar } from '../components/Navbar';
 import { DashboardView } from '../components/DashboardView';
+import { GFGTutorialView } from '../components/GFGTutorialView';
 import { PhaseExplorerView } from '../components/PhaseExplorerView';
 import { QuizArenaView } from '../components/QuizArenaView';
 import { MilestonesView } from '../components/MilestonesView';
@@ -33,6 +34,13 @@ export default function Home() {
             <DashboardView
               setActiveTab={setActiveTab}
               onSelectTopicForQuiz={handleSelectTopicForQuiz}
+            />
+          )}
+
+          {activeTab === 'gfg-hub' && (
+            <GFGTutorialView
+              onSelectTopicForQuiz={handleSelectTopicForQuiz}
+              setActiveTab={setActiveTab}
             />
           )}
 
