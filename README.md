@@ -14,11 +14,14 @@
 
 ## 🛠 Features
 
-### 1. 🌲 GFG-Style Learning Hub (`Topic > Subtopic > Sub-subtopic`)
+### 1. 🌲 Concept Learning Hub (`Topic > Subtopic > Sub-subtopic`)
 - **3-Level Hierarchical Tree**:
   - **Topic**: Phase / major domain (e.g., *Spring Core*, *JPA & Hibernate*, *Distributed Systems*).
   - **Subtopic**: Specific competency area (e.g., *Inversion of Control*, *Fetching Strategies*).
   - **Sub-subtopic**: Leaf concept with in-depth notes, copyable code, and official docs (e.g., *Constructor vs Field Injection*, *Solving N+1 with JOIN FETCH*).
+- **"More Detailed" On-Demand Engine (Gemini API)**:
+  - Generates deep architectural explanations and concrete real-life enterprise production scenarios & runnable Java 21 / Spring Boot 3 code.
+  - Interactive **Regenerate Explanation** (refreshes mental models) and **Regenerate Real-Life Examples** (generates fresh enterprise industry scenarios).
 - **In-Depth Conceptual Notes**: Plain-language mechanics explaining why things work the way they do under the hood.
 - **Copyable Java / Spring Snippets**: Real production-grade patterns with syntax formatting.
 - **Key Takeaways & Interview Gotchas**: Critical warnings and edge cases asked in tech interviews.

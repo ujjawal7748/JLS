@@ -288,20 +288,12 @@ export const PhaseExplorerView: React.FC<PhaseExplorerViewProps> = ({
                             {/* Actions: Deep Dive & Quiz Trigger */}
                             <div className="flex items-center gap-2 flex-shrink-0">
                               <button
-                                onClick={() => {
-                                  onSelectTopicForDeepDive?.({
-                                    phaseTitle: `Phase ${phase.id}: ${phase.title}`,
-                                    topicTitle: topic.title,
-                                    subTopicTitle: topic.summary,
-                                    subTopicId: topic.id,
-                                    keyConcepts: topic.keyConcepts,
-                                  });
-                                }}
+                                onClick={() => setActiveTab('learning-hub')}
                                 className="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-500/30 text-xs font-bold rounded-lg flex items-center gap-1.5 transition-all hover:scale-105"
-                                title="Generate masterclass notes with Gemini"
+                                title="Open this topic in the Concept Learning Hub"
                               >
-                                <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-                                <span>Deep Dive</span>
+                                <BookOpen className="w-3.5 h-3.5 text-emerald-400" />
+                                <span>Study Topic</span>
                               </button>
 
                               <button

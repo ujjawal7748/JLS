@@ -5,9 +5,18 @@ interface RequestPayload {
   topicTitle: string;
   subTopicTitle?: string;
   keyConcepts?: string[];
-  mode?: 'deep-dive' | 'code-walkthrough' | 'interview-drill' | 'troubleshooting' | 'custom';
+  mode?:
+    | 'more-detailed'
+    | 'regenerate-explanation'
+    | 'regenerate-examples'
+    | 'deep-dive'
+    | 'code-walkthrough'
+    | 'interview-drill'
+    | 'troubleshooting'
+    | 'custom';
   customQuery?: string;
   userApiKey?: string;
+  previousExamplesContext?: string;
 }
 
 // Check configuration status
@@ -16,14 +25,32 @@ export async function GET() {
   return NextResponse.json({
     hasEnvKey,
     defaultModel: 'gemini-3.8-flash',
-    supportedModes: ['deep-dive', 'code-walkthrough', 'interview-drill', 'troubleshooting', 'custom'],
+    supportedModes: [
+      'more-detailed',
+      'regenerate-explanation',
+      'regenerate-examples',
+      'deep-dive',
+      'code-walkthrough',
+      'interview-drill',
+      'troubleshooting',
+      'custom',
+    ],
   });
 }
 
 export async function POST(req: NextRequest) {
   try {
     const body: RequestPayload = await req.json();
-    const { phaseTitle, topicTitle, subTopicTitle, keyConcepts, mode = 'deep-dive', customQuery, userApiKey } = body;
+    const {
+      phaseTitle,
+      topicTitle,
+      subTopicTitle,
+      keyConcepts,
+      mode = 'more-detailed',
+      customQuery,
+      userApiKey,
+      previousExamplesContext,
+    } = body;
 
     // Resolve API key priority: client header -> request body -> process.env
     const headerKey = req.headers.get('x-gemini-key');
@@ -39,7 +66,7 @@ export async function POST(req: NextRequest) {
           success: false,
           error: 'MISSING_API_KEY',
           message:
-            'No Gemini API key found. Please add GEMINI_API_KEY=your_key in your .env.local file, or enter your key in the Deep Dive settings bar.',
+            'No Gemini API key found. Please add GEMINI_API_KEY=your_key in your .env.local file.',
         },
         { status: 400 }
       );
@@ -56,75 +83,110 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Build specialized prompt based on mode
-    let promptObjective = '';
-    if (mode === 'code-walkthrough') {
-      promptObjective = 'Focus heavily on complete, production-grade Java 21 / Spring Boot 3.x code, configuration classes, best architectural patterns, and step-by-step walkthrough.';
-    } else if (mode === 'interview-drill') {
-      promptObjective = 'Focus heavily on high-difficulty Senior & Staff Engineer interview questions, tricky whiteboarding scenarios, edge cases, and high-signal model answers.';
-    } else if (mode === 'troubleshooting') {
-      promptObjective = 'Focus heavily on production outages, memory leaks, high-concurrency race conditions, database connection pool starvation, and how to debug & monitor with Actuator / Prometheus / OpenTelemetry.';
-    } else {
-      promptObjective = 'Provide an exhaustive 360° technical deep-dive covering conceptual depth, architecture, production code, edge cases, and senior interview drills.';
-    }
+    let systemPrompt = '';
 
-    const systemPrompt = `You are a Principal Java & Spring Boot Software Architect at a high-scale enterprise tech company.
-The user is studying a 3-month roadmap to secure a high-paying Backend Engineer / Spring Boot role.
+    if (mode === 'regenerate-explanation') {
+      systemPrompt = `You are a Principal Java & Spring Boot Software Architect at a high-scale enterprise tech company.
+The user wants a FRESH, deeper, and alternative in-depth technical explanation for:
+- Main Topic: ${topicTitle}
+${subTopicTitle ? `- Subtopic: ${subTopicTitle}` : ''}
+${keyConcepts && keyConcepts.length > 0 ? `- Concepts: ${keyConcepts.join(', ')}` : ''}
 
-Your task is to generate human-developer-grade, comprehensive, actionable documentation and masterclass study notes.
-Write in a direct, authoritative, senior-engineer style. Avoid generic corporate fluff or superficial summaries.
+Generate a crystal-clear, exhaustive explanation focusing on:
+1. 🧠 **Deep Mental Model & Architectural Mechanics**:
+   - Internal JVM memory model, bytecode/proxy mechanics, thread scheduling, and container lifecycle.
+   - Exact execution sequence when a request hits this layer.
+2. ⚡ **Why Earlier Alternatives Failed**:
+   - Why simpler or traditional approaches break down under enterprise concurrency or high scale.
+3. ⚠️ **Subtle Edge Cases**:
+   - Edge cases that senior interviewers test for.
 
-Topic Context:
+Write in authoritative, direct markdown. Zero generic buzzwords.`;
+    } else if (mode === 'regenerate-examples') {
+      systemPrompt = `You are a Principal Java & Spring Boot Software Architect at a high-scale enterprise tech company.
+The user wants BRAND NEW, DISTINCT real-life enterprise production examples and code for:
+- Main Topic: ${topicTitle}
+${subTopicTitle ? `- Subtopic: ${subTopicTitle}` : ''}
+${previousExamplesContext ? `- Note: The previous example covered: "${previousExamplesContext}". Generate a completely DIFFERENT industry domain (e.g. choose between FinTech Payments, Healthcare Patient Telemetry, High-Frequency Trading, Streaming Video Transcoding, or Logistics Fleet Routing).` : ''}
+
+Generate:
+1. 🏢 **Real-Life Enterprise Business Problem**:
+   - Describe a realistic high-traffic enterprise production scenario (volume, latency requirements, failure consequences).
+   - Architecture diagram (ASCII / flow).
+2. 💻 **Production Java 21 & Spring Boot 3 Code**:
+   - Complete, compile-ready, runnable production code implementing this exact real-life scenario.
+   - Annotations, validation, proper exception handling, and virtual threads / modern records.
+3. 🛡️ **Production Reliability & Gotchas**:
+   - What fails under 10,000 RPS in this scenario and how the code guards against it.
+
+Write in authoritative, direct markdown. Complete runnable code blocks.`;
+    } else if (mode === 'more-detailed') {
+      systemPrompt = `You are a Principal Java & Spring Boot Software Architect at a high-scale enterprise tech company.
+The user requested a **More Detailed** breakdown with deep technical explanation AND real-life production examples for:
 - Phase: ${phaseTitle || 'Spring Boot to Microservices'}
 - Main Topic: ${topicTitle}
-${subTopicTitle ? `- Subtopic / Sub-subtopic: ${subTopicTitle}` : ''}
-${keyConcepts && keyConcepts.length > 0 ? `- Key Concepts to Address: ${keyConcepts.join(', ')}` : ''}
-${customQuery ? `- User Specific Focus Query: ${customQuery}` : ''}
+${subTopicTitle ? `- Subtopic: ${subTopicTitle}` : ''}
+${keyConcepts && keyConcepts.length > 0 ? `- Key Concepts: ${keyConcepts.join(', ')}` : ''}
+${customQuery ? `- Custom User Focus: ${customQuery}` : ''}
 
-Primary Objective: ${promptObjective}
+Generate an exhaustive, senior-level guide formatted in clean, rich Markdown with these explicit sections:
 
-Generate the response in rich, formatted Markdown with these distinct sections:
+# ${subTopicTitle || topicTitle} — Detailed Technical Analysis & Real-Life Production Architecture
 
-# ${subTopicTitle || topicTitle} — Deep Technical Guide
-
-> **Core Philosophy**: A 2-sentence executive summary explaining what problem this technology solves and why it is essential in enterprise systems.
+> **Executive Overview**: A 2-sentence summary of why this exists and what catastrophic problem it prevents in distributed systems.
 
 ---
 
-### 1. 🧠 Architectural Breakdown & The "Why"
-- Plain-language intuition followed by internal mechanics (JVM heap, Spring ApplicationContext, CGLIB / JDK dynamic proxies, thread scheduling, or network I/O).
-- Why standard alternatives were insufficient (e.g., why Spring Security filter chain replaced raw servlets, why Kafka replaced basic DB queues, why WebClient replaced RestTemplate).
+### 1. 🧠 In-Depth Technical Explanation & Mechanics
+- **How it works under the hood**: JVM heap layout, classloading, Spring container bean factory / proxy lifecycle (CGLIB vs JDK dynamic proxy), or network socket I/O.
+- **Step-by-step internal execution lifecycle**: Trace what happens behind the scenes from the moment the code runs.
+- **Why this design was chosen**: Compare directly against naïve alternatives and explain the trade-offs (latency vs throughput vs consistency).
 
-### 2. 🏗️ Enterprise Production Flow
-- Describe how a real transaction or request flows through this component in production (e.g. in a distributed payments, orders, or banking service).
-- ASCII or clear structured diagram illustrating the pipeline.
+---
 
-### 3. 💻 Complete Production-Grade Java 21 & Spring Boot 3.x Code
-- Write modern, compile-ready, idiomatic code using Spring Boot 3.x and Java 21 features (records, pattern matching, virtual threads where applicable).
-- Include necessary annotations (@Configuration, @Service, @Bean, validation, exception handling).
-- Add crisp inline comments on non-obvious engineering decisions.
+### 2. 🏢 Real-Life Enterprise Production Scenarios
+Provide 2 concrete, vivid real-world industry applications:
+- **Scenario A (e.g. High-Scale Payments / E-Commerce)**: Exact business requirements, throughput targets, and how this technology solves it.
+- **Scenario B (e.g. Real-Time Telemetry / Microservices Async Processing)**: Another distinct enterprise use case.
+- **Architectural Flow**: Clear ASCII diagram illustrating the request/data pipeline.
+
+---
+
+### 3. 💻 Complete Production-Grade Java 21 & Spring Boot 3 Code
+Write clean, compile-ready, modern code solving the real-life scenario:
+- Modern Java 21 features (records, sealed interfaces, pattern matching).
+- Production Spring Boot 3 annotations, configuration beans, proper thread boundaries.
+- Error handling, timeouts, and metrics.
+- Inline comments explaining non-obvious engineering decisions.
 
 \`\`\`java
-// Production-ready implementation
+// Complete production implementation
 \`\`\`
 
-### 4. ⚠️ Critical Production Gotchas, Memory Leaks & Anti-Patterns
-- List 3 real-world traps that cause production outages or subtle bugs (e.g., @Transactional self-invocation proxy bypass, N+1 query problem, unbounded thread pools, Jackson infinite serialization recursion).
-- For each gotcha: Explain the failure mode + provide the exact fix code.
+---
+
+### 4. ⚠️ Enterprise Traps, Memory Leaks & Concurrency Gotchas
+- 3 real production bugs/outages caused by misuse of this topic (e.g., connection starvation, proxy bypass, infinite recursion, memory leaks).
+- Exact failure signature + the production fix.
+
+---
 
 ### 5. 🎯 Senior Engineer Interview Drills
-Provide 3 challenging, real-world interview questions frequently asked by FAANG / Tier-1 tech firms on this exact topic:
-- **Q1**: Tricky architectural / concurrency scenario.
-  - **Model Answer**: Crisp, senior-level response with the exact technical keywords interviewers look for.
-- **Q2**: Internal implementation question (e.g. How does Spring manage bean scopes or connection pools?).
-  - **Model Answer**: Deep technical explanation.
-- **Q3**: Production troubleshooting question (e.g. How would you debug high CPU or DB connection pool exhaustion?).
-  - **Model Answer**: Structured RCA (Root Cause Analysis) strategy.
-
-### 6. 📺 Recommended Video Channels & Official Specs
-- Top YouTube creators with specific topics (e.g., Amigoscode, Dan Vega, Bouali Ali, Vlad Mihalcea, ByteByteGo, Hussein Nasser).
-- Official Spring.io / Java documentation URLs and RFC specs.
+- **Interview Question 1**: Tricky architectural / concurrency scenario.
+  - **Senior Model Answer**: Punchy, keyword-rich answer.
+- **Interview Question 2**: Internal mechanics question.
+  - **Senior Model Answer**: Deep-dive answer.
 `;
+    } else {
+      systemPrompt = `You are a Principal Java & Spring Boot Software Architect at a high-scale enterprise tech company.
+The user is studying a 3-month roadmap for high-paying Java/Spring Boot backend engineering roles.
+Generate comprehensive documentation for:
+Topic: ${topicTitle}
+${subTopicTitle ? `Subtopic: ${subTopicTitle}` : ''}
+${keyConcepts ? `Concepts: ${keyConcepts.join(', ')}` : ''}
+${customQuery ? `Specific Query: ${customQuery}` : ''}
+Focus: ${mode}`;
+    }
 
     // Try models in order of capability & availability
     const candidateModels = ['gemini-3.8-flash', 'gemini-3.5-flash-lite', 'gemini-3.1-flash-lite'];

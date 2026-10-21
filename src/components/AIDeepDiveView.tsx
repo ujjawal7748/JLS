@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTracker } from '../context/TrackerContext';
 import { PHASES_DATA } from '../data/curriculumData';
-import { GFG_CURRICULUM_DATA } from '../data/gfgCurriculumData';
+import { CONCEPT_CURRICULUM_DATA } from '../data/conceptCurriculumData';
 import { MarkdownRenderer } from './MarkdownRenderer';
 import {
   Sparkles,
@@ -240,8 +240,8 @@ export const AIDeepDiveView: React.FC<AIDeepDiveViewProps> = ({
     keyConcepts: string[];
   }[] = [];
 
-  // From GFG curriculum
-  GFG_CURRICULUM_DATA.forEach((phase) => {
+  // From curriculum data
+  CONCEPT_CURRICULUM_DATA.forEach((phase) => {
     phase.topics.forEach((topic) => {
       topic.subTopics?.forEach((subTopic) => {
         subTopic.subSubTopics.forEach((sst) => {

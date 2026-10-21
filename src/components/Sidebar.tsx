@@ -38,10 +38,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const { progress, levelInfo } = useTracker();
 
-  const navigation = [
+  interface NavItem {
+    id: string;
+    label: string;
+    icon: React.ComponentType<{ className?: string }>;
+    badge?: string;
+  }
+
+  const navigation: NavItem[] = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { id: 'ai-deepdive', label: 'Topic Deep Dive', icon: Sparkles, badge: 'Gemini' },
-    { id: 'gfg-hub', label: 'Learning Hub (GFG)', icon: BookOpen, badge: 'New' },
+    { id: 'learning-hub', label: 'Learning Hub', icon: BookOpen },
     { id: 'curriculum', label: 'Roadmap & Topics', icon: Map },
     { id: 'quizzes', label: 'Topic Quizzes', icon: HelpCircle },
     { id: 'milestones', label: 'Milestones & Badges', icon: Award },

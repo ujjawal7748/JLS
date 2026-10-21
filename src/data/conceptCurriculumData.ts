@@ -1,6 +1,6 @@
 import { Phase } from '../types';
 
-export const GFG_CURRICULUM_DATA: Phase[] = [
+export const CONCEPT_CURRICULUM_DATA: Phase[] = [
   {
     id: 0,
     title: 'Phase 0: Java, SQL, Git & HTTP Foundations',
@@ -63,7 +63,7 @@ export const GFG_CURRICULUM_DATA: Phase[] = [
                 title: 'Encapsulation & Domain Invariants',
                 conceptDetails:
                   'Encapsulation bundles data with behavior and conceals internal representation behind controlled accessors. In backend enterprise architecture, true encapsulation means domain objects enforce their own validation invariants (e.g., account balance cannot be negative) rather than exposing raw public setters where any external service can corrupt domain state.',
-                codeSnippet: `// GFG Pattern: Enforcing Encapsulation Invariants in Domain Entity
+                codeSnippet: `// Production Pattern: Enforcing Encapsulation Invariants in Domain Entity
 public class BankAccount {
     private final String accountNumber;
     private BigDecimal balance;
@@ -254,7 +254,7 @@ int bucketIndex = (n - 1) & hash;`,
                 title: 'The equals() and hashCode() Contract',
                 conceptDetails:
                   'If obj1.equals(obj2) is true, their hashCode() MUST return the exact same integer. If you override equals() without hashCode(), two logically identical objects compute different hash codes, landing in completely different buckets. A map.get(key) call will fail to find the value even though equals() would evaluate to true.',
-                codeSnippet: `// GFG Best Practice: Proper equals and hashCode in Java 17+
+                codeSnippet: `// Best Practice: Proper equals and hashCode in Java 17+
 public class CustomerId {
     private final String tenantId;
     private final long userId;
@@ -657,7 +657,7 @@ public class ReportService {
                 title: 'The 7-Step DispatcherServlet Request Cycle',
                 conceptDetails:
                   '1) Request hits DispatcherServlet (Front Controller). 2) Queries HandlerMapping to locate matching @RestController method. 3) Delegates to HandlerAdapter. 4) HandlerMethodArgumentResolver parses parameters and executes @Valid validation. 5) Controller executes service business logic. 6) HttpMessageConverter (Jackson) serializes return object into JSON. 7) Response returned through servlet filter chain to client.',
-                codeSnippet: `// GFG Flow Summary:
+                codeSnippet: `// Architecture Request Flow:
 // Client Request -> DispatcherServlet
 //      -> HandlerMapping (finds /api/v1/orders)
 //      -> HandlerAdapter
@@ -949,7 +949,7 @@ public class OrderService {
                 title: 'OncePerRequestFilter & SecurityContextHolder',
                 conceptDetails:
                   'A custom JWT filter extends OncePerRequestFilter. It extracts the Authorization header, validates the digital signature and expiration, constructs an Authentication token, and sets it in SecurityContextHolder.getContext().setAuthentication(authToken). Downstream filters inspect this context to grant access.',
-                codeSnippet: `// GFG Pattern: Spring Security 6 FilterChain Configuration
+                codeSnippet: `// Production Pattern: Spring Security 6 FilterChain Configuration
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -1050,7 +1050,7 @@ public class SecurityConfig {
                 title: 'Partition Key Hashing & Consumer Groups',
                 conceptDetails:
                   'Producers publish events with a key (e.g. orderId). Kafka computes hash(key) % partitionCount. All events sharing the exact same key land on the same partition and are consumed strictly in order by one consumer instance in a consumer group. If key is null, messages are distributed across partitions in a sticky batch round-robin.',
-                codeSnippet: `// GFG Pattern: High-Durability Kafka Producer & Consumer
+                codeSnippet: `// Production Pattern: High-Durability Kafka Producer & Consumer
 @Service
 public class OrderEventPublisher {
     private final KafkaTemplate<String, OrderCreatedEvent> kafkaTemplate;
@@ -1154,7 +1154,7 @@ public class InventoryEventListener {
                 title: 'Solving the Dual-Write Problem',
                 conceptDetails:
                   'If you update the database and then call kafkaTemplate.send(), the app can crash before sending the event (event lost!). If you send the event first, the database transaction might roll back (phantom event sent!). Outbox pattern writes the business change AND an outbox record in the SAME local database transaction. A separate relay (Debezium CDC or poller) publishes the event reliably to Kafka with at-least-once delivery.',
-                codeSnippet: `// GFG Pattern: Atomic Local Transactional Outbox
+                codeSnippet: `// Production Pattern: Atomic Local Transactional Outbox
 @Service
 public class OrderService {
     private final OrderRepository orderRepository;

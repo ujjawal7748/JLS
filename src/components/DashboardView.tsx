@@ -117,19 +117,12 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               </p>
               <div className="flex items-center gap-2">
                 <button
-                  onClick={() => setActiveTab('ai-deepdive')}
-                  className="px-3 py-1.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 transition-transform hover:scale-105 shadow-md shadow-emerald-950/50"
-                  title="Generate masterclass notes with Gemini AI"
-                >
-                  <Sparkles className="w-3.5 h-3.5" />
-                  AI Deep Dive
-                </button>
-                <button
-                  onClick={() => setActiveTab('gfg-hub')}
-                  className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-semibold flex items-center gap-1 border border-slate-700 transition-colors"
+                  onClick={() => setActiveTab('learning-hub')}
+                  className="px-3.5 py-1.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 transition-transform hover:scale-105 shadow-md shadow-emerald-950/50"
+                  title="Open topic in Concept Learning Hub"
                 >
                   <BookOpen className="w-3.5 h-3.5" />
-                  Read Hub
+                  Study in Hub
                 </button>
                 <button
                   onClick={() => {

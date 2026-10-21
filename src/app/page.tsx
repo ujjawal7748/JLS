@@ -5,7 +5,7 @@ import { TrackerProvider } from '../context/TrackerContext';
 import { Sidebar } from '../components/Sidebar';
 import { Navbar } from '../components/Navbar';
 import { DashboardView } from '../components/DashboardView';
-import { GFGTutorialView } from '../components/GFGTutorialView';
+import { ConceptTutorialView } from '../components/ConceptTutorialView';
 import { PhaseExplorerView } from '../components/PhaseExplorerView';
 import { QuizArenaView } from '../components/QuizArenaView';
 import { MilestonesView } from '../components/MilestonesView';
@@ -71,8 +71,8 @@ export default function Home() {
               />
             )}
 
-            {activeTab === 'gfg-hub' && (
-              <GFGTutorialView
+            {activeTab === 'learning-hub' && (
+              <ConceptTutorialView
                 onSelectTopicForQuiz={handleSelectTopicForQuiz}
                 onSelectTopicForDeepDive={handleSelectTopicForDeepDive}
                 setActiveTab={setActiveTab}
